@@ -5,6 +5,7 @@ import bz2
 import lzma
 import tarfile
 import zipfile
+import urllib
 
 
 from tqdm import tqdm
@@ -23,8 +24,7 @@ def gen_bar_updater():
 
 
 def download_url(url, fpath):
-    import urllib
-    print('  Downloading ' + url + ' to ' + fpath)
+    print("    Downloading " + url + " to " + fpath)
     urllib.request.urlretrieve(url, fpath, reporthook=gen_bar_updater())
 
 
@@ -54,34 +54,40 @@ def _is_xz(filename):
 
 def extract_archive(folder_path, filename):
     archive_path = os.path.join(folder_path, filename)
-    print("  Extracting {} to {}".format(archive_path, folder_path))
+    print("    Extracting {} to {}".format(archive_path, folder_path))
 
     if folder_path is None:
         folder_path = os.path.dirname(archive_path)
 
     if _is_tar(archive_path):
-        with tarfile.open(archive_path, 'r') as tar:
+        with tarfile.open(archive_path, "r") as tar:
             tar.extractall(path=folder_path)
     elif _is_targz(archive_path):
-        with tarfile.open(archive_path, 'r:gz') as tar:
+        with tarfile.open(archive_path, "r:gz") as tar:
             tar.extractall(path=folder_path)
     elif _is_gzip(archive_path):
-        folder_path = os.path.join(folder_path, os.path.splitext(os.path.basename(archive_path))[0])
+        folder_path = os.path.join(
+            folder_path, os.path.splitext(os.path.basename(archive_path))[0]
+        )
         with open(folder_path, "wb") as out_f, gzip.GzipFile(archive_path) as zip_f:
             out_f.write(zip_f.read())
     elif _is_zip(archive_path):
-        with zipfile.ZipFile(archive_path, 'r') as z:
+        with zipfile.ZipFile(archive_path, "r") as z:
             z.extractall(folder_path)
     elif _is_bz2(archive_path):
-        folder_path = os.path.join(folder_path, os.path.splitext(os.path.basename(archive_path))[0])
+        folder_path = os.path.join(
+            folder_path, os.path.splitext(os.path.basename(archive_path))[0]
+        )
         with open(folder_path, "wb") as out_f, bz2.open(archive_path) as bz2_f:
             out_f.write(bz2_f.read())
     elif _is_xz(archive_path):
-        folder_path = os.path.join(folder_path, os.path.splitext(os.path.basename(archive_path))[0])
+        folder_path = os.path.join(
+            folder_path, os.path.splitext(os.path.basename(archive_path))[0]
+        )
         with open(folder_path, "wb") as out_f, lzma.open(archive_path) as xz_f:
             out_f.write(xz_f.read())
     else:
-        print("  ! Nothing to extract in {}".format(archive_path))
+        print("    - Nothing to extract in {}".format(archive_path))
         return
     os.remove(archive_path)
 

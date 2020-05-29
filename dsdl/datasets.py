@@ -1,12 +1,23 @@
 import os
 from . import config
+import numpy as np
 import sklearn as sk
 import sklearn.datasets
 from .downloader import download_and_extract
+import pandas as pd
 
 
-class Dataset():
-    def __init__(self, X_tr, y_tr, X_val=None, y_val=None, X_te=None, y_te=None, task=config.TASK_CLASS):
+class Dataset:
+    def __init__(
+        self,
+        X_tr,
+        y_tr,
+        X_val=None,
+        y_val=None,
+        X_te=None,
+        y_te=None,
+        task=config.TASK_CLASS,
+    ):
         assert task in config.AVAILABLE_TASKS
         self.X_tr = X_tr
         self.y_tr = y_tr
@@ -27,12 +38,24 @@ class Dataset():
 
     def __str__(self):
         def get_shape_or_none(x):
-            return ("" if x[0] is None else str(x[0].shape)) + ("" if x[1] is None else ", " + str(x[1].shape))
-        return str({
-            "train": get_shape_or_none(self.get_train()),
-            "val": get_shape_or_none(self.get_val()),
-            "test": get_shape_or_none(self.get_test())
-        })
+            return ("" if x[0] is None else str(x[0].shape)) + (
+                "" if x[1] is None else ", " + str(x[1].shape)
+            )
+
+        return str(
+            {
+                "train": get_shape_or_none(self.get_train()),
+                "val": get_shape_or_none(self.get_val()),
+                "test": get_shape_or_none(self.get_test()),
+            }
+        )
+
+
+def is_downloaded(dname):
+    dsinfo = config.DSETS[dname]
+    folder_path = os.path.join(config.DATA_ROOT, dname)
+    path_tr = os.path.join(folder_path, dsinfo["train"])
+    return os.path.isfile(path_tr)
 
 
 def load_libsvm(dname):
@@ -43,15 +66,61 @@ def load_libsvm(dname):
     path_val = os.path.join(folder_path, dsinfo["val"]) if "val" in dsinfo else None
     path_te = os.path.join(folder_path, dsinfo["test"]) if "test" in dsinfo else None
 
-    if not os.path.isfile(path_tr):
+    if not is_downloaded(dname):
         for url in dsinfo["urls"]:
             download_and_extract(url, folder_path)
 
     tr = sk.datasets.load_svmlight_file(path_tr)
-    val = sk.datasets.load_svmlight_file(path_val) if path_val is not None else (None, None)
-    te = sk.datasets.load_svmlight_file(path_te) if path_te is not None else (None, None)
+    val = (
+        sk.datasets.load_svmlight_file(path_val)
+        if path_val is not None
+        else (None, None)
+    )
+    te = (
+        sk.datasets.load_svmlight_file(path_te) if path_te is not None else (None, None)
+    )
     return tr[0], tr[1], val[0], val[1], te[0], te[1]
 
 
+def load_skl(dname):
+    loader = getattr(sk.datasets, config.DSETS[dname]["skl_loader"])
+    x_tr, y_tr = loader(return_X_y=True)
+    return x_tr, y_tr, None, None, None, None
+
+
+def load_uci(dname):
+    dsinfo = config.DSETS[dname]
+    folder_path = os.path.join(config.DATA_ROOT, dname)
+
+    if not is_downloaded(dname):
+        for url in dsinfo["urls"]:
+            download_and_extract(url, folder_path)
+
+    def load_if_exist(data_subset):
+        if data_subset not in dsinfo:
+            return None, None
+        path = os.path.join(folder_path, dsinfo[data_subset])
+        if ".xls" in path:
+            data = pd.read_excel(path).to_numpy()
+        else:
+            data = np.loadtxt(path)
+
+        x = data[:, dsinfo["features"]] if "features" in dsinfo else data[:, :-1]
+        y = data[:, dsinfo["target"]] if "target" in dsinfo else data[:, -1]
+
+        return x, y
+
+    x_tr, y_tr = load_if_exist("train")
+    x_val, y_val = load_if_exist("val")
+    x_te, y_te = load_if_exist("test")
+
+    return x_tr, y_tr, x_val, y_val, x_te, y_te
+
+
 def load(dname):
-    return Dataset(*load_libsvm(dname), config.DSETS[dname]["TASK"])
+    if config.DSETS[dname]["format"] == "skl":
+        return Dataset(*load_skl(dname), config.DSETS[dname]["TASK"])
+    elif config.DSETS[dname]["format"] == "uci":
+        return Dataset(*load_uci(dname), config.DSETS[dname]["TASK"])
+    else:
+        return Dataset(*load_libsvm(dname), config.DSETS[dname]["TASK"])
