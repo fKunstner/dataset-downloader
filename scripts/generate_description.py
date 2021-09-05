@@ -14,7 +14,7 @@ def get_shape_or_none(x):
 
 
 def total_size(dname):
-    f_path = Path(os.path.join(dsdl.config.DATA_ROOT, dname))
+    f_path = Path(os.path.join(dsdl.config.Config.get("DATA_ROOT"), dname))
     tot_bytes = sum(f.stat().st_size for f in f_path.glob("**/*") if f.is_file())
 
     def sizeof_fmt(num, suffix="B"):
@@ -44,7 +44,7 @@ print(fstr.format(task="-", dsname="-", tr="-", val="-", te="-", tsize="-"))
 
 for dsname in dsdl.available_datasets():
     ds = dsdl.load(dsname)
-    dsinfo = dsdl.config.DSETS[dsname]
+    dsinfo = dsdl.available_datasets.DSETS[dsname]
     print(
         fstr.format(
             task=ds.task,

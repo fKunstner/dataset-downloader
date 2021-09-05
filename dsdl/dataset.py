@@ -1,5 +1,6 @@
 import os
-from . import config
+from . import available_datasets
+from .config import Config
 import numpy as np
 import sklearn as sk
 import sklearn.datasets
@@ -16,9 +17,9 @@ class Dataset:
         y_val=None,
         X_te=None,
         y_te=None,
-        task=config.TASK_CLASS,
+        task=available_datasets.TASK_CLASS,
     ):
-        assert task in config.AVAILABLE_TASKS
+        assert task in available_datasets.AVAILABLE_TASKS
         self.X_tr = X_tr
         self.y_tr = y_tr
         self.X_val = X_val
@@ -52,15 +53,15 @@ class Dataset:
 
 
 def is_downloaded(dname):
-    dsinfo = config.DSETS[dname]
-    folder_path = os.path.join(config.DATA_ROOT, dname)
+    dsinfo = available_datasets.DSETS[dname]
+    folder_path = os.path.join(Config.get("DATA_ROOT"), dname)
     path_tr = os.path.join(folder_path, dsinfo["train"])
     return os.path.isfile(path_tr)
 
 
 def load_libsvm(dname):
-    dsinfo = config.DSETS[dname]
-    folder_path = os.path.join(config.DATA_ROOT, dname)
+    dsinfo = available_datasets.DSETS[dname]
+    folder_path = os.path.join(Config.get("DATA_ROOT"), dname)
 
     path_tr = os.path.join(folder_path, dsinfo["train"])
     path_val = os.path.join(folder_path, dsinfo["val"]) if "val" in dsinfo else None
@@ -83,14 +84,14 @@ def load_libsvm(dname):
 
 
 def load_skl(dname):
-    loader = getattr(sk.datasets, config.DSETS[dname]["skl_loader"])
+    loader = getattr(sk.datasets, available_datasets.DSETS[dname]["skl_loader"])
     x_tr, y_tr = loader(return_X_y=True)
     return x_tr, y_tr, None, None, None, None
 
 
 def load_uci(dname):
-    dsinfo = config.DSETS[dname]
-    folder_path = os.path.join(config.DATA_ROOT, dname)
+    dsinfo = available_datasets.DSETS[dname]
+    folder_path = os.path.join(Config.get("DATA_ROOT"), dname)
 
     if not is_downloaded(dname):
         for url in dsinfo["urls"]:
@@ -118,9 +119,9 @@ def load_uci(dname):
 
 
 def load(dname):
-    if config.DSETS[dname]["format"] == "skl":
-        return Dataset(*load_skl(dname), config.DSETS[dname]["TASK"])
-    elif config.DSETS[dname]["format"] == "uci":
-        return Dataset(*load_uci(dname), config.DSETS[dname]["TASK"])
+    if available_datasets.DSETS[dname]["format"] == "skl":
+        return Dataset(*load_skl(dname), available_datasets.DSETS[dname]["TASK"])
+    elif available_datasets.DSETS[dname]["format"] == "uci":
+        return Dataset(*load_uci(dname), available_datasets.DSETS[dname]["TASK"])
     else:
-        return Dataset(*load_libsvm(dname), config.DSETS[dname]["TASK"])
+        return Dataset(*load_libsvm(dname), available_datasets.DSETS[dname]["TASK"])
