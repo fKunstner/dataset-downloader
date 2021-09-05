@@ -1,9 +1,10 @@
-from .datasets import load, is_downloaded
-from . import config
+from .dataset import load, is_downloaded
+from . import available_datasets
+from .config import Config
 
 
 def available_datasets():
-    return list(config.DSETS.keys())
+    return list(available_datasets.DSETS.keys())
 
 
 def loader(dsname):
