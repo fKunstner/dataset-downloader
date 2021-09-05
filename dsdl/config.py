@@ -13,3 +13,9 @@ class Config:
     @staticmethod
     def set(name, value):
         Config.__conf[name] = value
+        return Config
+
+    @staticmethod
+    def set_data_root(value):
+        Config.set("DATA_ROOT", value)
+        return Config
