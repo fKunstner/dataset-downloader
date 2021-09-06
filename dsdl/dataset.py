@@ -118,10 +118,27 @@ def load_uci(dname):
     return x_tr, y_tr, x_val, y_val, x_te, y_te
 
 
+def load_custom(dname):
+    dsinfo = available_datasets.DSETS[dname]
+    folder_path = os.path.join(Config.get("DATA_ROOT"), dname)
+
+    if dname == "faithful":
+        if not is_downloaded(dname):
+            download_and_extract(dsinfo["url"], folder_path)
+        path = os.path.join(folder_path, dsinfo["train"])
+        data = np.genfromtxt(path, skip_header=26, usecols=(1, 2))
+        return data, None, None, None, None, None
+
+
 def load(dname):
-    if available_datasets.DSETS[dname]["format"] == "skl":
-        return Dataset(*load_skl(dname), available_datasets.DSETS[dname]["TASK"])
-    elif available_datasets.DSETS[dname]["format"] == "uci":
-        return Dataset(*load_uci(dname), available_datasets.DSETS[dname]["TASK"])
+    dataset = available_datasets.DSETS[dname]
+    if dataset["format"] == "skl":
+        return Dataset(*load_skl(dname), dataset["TASK"])
+    elif dataset["format"] == "uci":
+        return Dataset(*load_uci(dname), dataset["TASK"])
+    elif dataset["format"] == "libsvm":
+        return Dataset(*load_libsvm(dname), dataset["TASK"])
+    elif dataset["format"] == "custom":
+        return Dataset(*load_custom(dname), dataset["TASK"])
     else:
-        return Dataset(*load_libsvm(dname), available_datasets.DSETS[dname]["TASK"])
+        raise ValueError(f"Unknown dataset format for {dname}: {dataset}")

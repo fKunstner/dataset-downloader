@@ -2,12 +2,13 @@ import os
 
 TASK_CLASS = "Classification"
 TASK_REG = "Regression"
+TASK_CLU = "Clustering"
 
 SIZE_SMALL = "small"
 SIZE_MEDIUM = "medium"
 SIZE_LARGE = "large"
 
-AVAILABLE_TASKS = [TASK_CLASS, TASK_REG]
+AVAILABLE_TASKS = [TASK_CLASS, TASK_REG, TASK_CLU]
 
 
 def libsvm_url(category, file):
@@ -502,5 +503,11 @@ DSETS = {
         "skl_loader": "load_digits",
         "format": "skl",
         "TASK": TASK_CLASS,
+    },
+    "faithful": {
+        "url": "http://www.stat.cmu.edu/~larry/all-of-statistics/=data/faithful.dat",
+        "train": "faithful.dat",
+        "format": "custom",
+        "TASK": TASK_CLU,
     },
 }
