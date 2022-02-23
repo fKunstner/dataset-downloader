@@ -10,7 +10,7 @@ with open(REQUIREMENTS_FILE) as f:
 
 setup(
     name="dsdl",
-    version="0.1.1",
+    version="0.1.2",
     description="Dataset Downloader",
     long_description_content_type="text/markdown",
     url="https://github.com/fkunstner/dataset-downloader",

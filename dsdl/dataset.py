@@ -118,7 +118,7 @@ def load_uci(dname):
     return x_tr, y_tr, x_val, y_val, x_te, y_te
 
 
-def load_custom(dname):
+def load_other(dname):
     dsinfo = available_datasets.DSETS[dname]
     folder_path = os.path.join(Config.get("DATA_ROOT"), dname)
 
@@ -138,7 +138,7 @@ def load(dname):
         return Dataset(*load_uci(dname), dataset["TASK"])
     elif dataset["format"] == "libsvm":
         return Dataset(*load_libsvm(dname), dataset["TASK"])
-    elif dataset["format"] == "custom":
-        return Dataset(*load_custom(dname), dataset["TASK"])
+    elif dataset["format"] == "other":
+        return Dataset(*load_other(dname), dataset["TASK"])
     else:
         raise ValueError(f"Unknown dataset format for {dname}: {dataset}")

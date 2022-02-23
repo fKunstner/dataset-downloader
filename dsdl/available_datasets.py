@@ -447,6 +447,203 @@ DSETS = {
         "format": "libsvm",
         "TASK": TASK_CLASS,
     },
+    "abalone": {
+        "url": libsvm_ds_url("binary", "abalone"),
+        "urls": [
+            libsvm_url("regression", "abalone"),
+        ],
+        "train": "abalone",
+        "format": "libsvm",
+        "TASK": TASK_REG,
+    },
+    "abalone_scale": {
+        "url": libsvm_ds_url("binary", "abalone"),
+        "urls": [
+            libsvm_url("regression", "abalone_scale"),
+        ],
+        "train": "abalone_scale",
+        "format": "libsvm",
+        "TASK": TASK_REG,
+    },
+    "bodyfat": {
+        "url": libsvm_ds_url("binary", "bodyfat"),
+        "urls": [
+            libsvm_url("regression", "bodyfat"),
+        ],
+        "train": "bodyfat",
+        "format": "libsvm",
+        "TASK": TASK_REG,
+    },
+    "bodyfat_scale": {
+        "url": libsvm_ds_url("binary", "bodyfat"),
+        "urls": [
+            libsvm_url("regression", "bodyfat_scale"),
+        ],
+        "train": "bodyfat_scale",
+        "format": "libsvm",
+        "TASK": TASK_REG,
+    },
+    "cadata": {
+        "url": libsvm_ds_url("binary", "cadata"),
+        "urls": [
+            libsvm_url("regression", "cadata"),
+        ],
+        "train": "cadata",
+        "format": "libsvm",
+        "TASK": TASK_REG,
+    },
+    "cpusmall": {
+        "url": libsvm_ds_url("binary", "cpusmall"),
+        "urls": [
+            libsvm_url("regression", "cpusmall"),
+        ],
+        "train": "cpusmall",
+        "format": "libsvm",
+        "TASK": TASK_REG,
+    },
+    "cpusmall_scale": {
+        "url": libsvm_ds_url("binary", "cpusmall"),
+        "urls": [
+            libsvm_url("regression", "cpusmall_scale"),
+        ],
+        "train": "cpusmall_scale",
+        "format": "libsvm",
+        "TASK": TASK_REG,
+    },
+    "E2006-log1p": {
+        "url": libsvm_ds_url("binary", "E2006-log1p"),
+        "urls": [
+            libsvm_url("regression", "log1p.E2006.train.bz2"),
+            libsvm_url("regression", "log1p.E2006.test.bz2"),
+        ],
+        "train": "log1p.E2006.train",
+        "test": "log1p.E2006.test",
+        "format": "libsvm",
+        "TASK": TASK_REG,
+    },
+    "E2006-E2006-tfidf": {
+        "url": libsvm_ds_url("binary", "E2006-tfidf"),
+        "urls": [
+            libsvm_url("regression", "E2006.train.bz2"),
+            libsvm_url("regression", "E2006.test.bz2"),
+        ],
+        "train": "E2006.train",
+        "test": "E2006.test",
+        "format": "libsvm",
+        "TASK": TASK_REG,
+    },
+    "eunite2001": {
+        "url": libsvm_ds_url("binary", "eunite2001"),
+        "urls": [
+            libsvm_url("regression", "eunite2001"),
+            libsvm_url("regression", "eunite2001.t"),
+        ],
+        "train": "eunite2001",
+        "test": "eunite2001.t  ",
+        "format": "libsvm",
+        "TASK": TASK_REG,
+    },
+    "mg": {
+        "url": libsvm_ds_url("binary", "mg"),
+        "urls": [
+            libsvm_url("regression", "mg"),
+        ],
+        "train": "mg",
+        "format": "libsvm",
+        "TASK": TASK_REG,
+    },
+    "mg_scale": {
+        "url": libsvm_ds_url("binary", "mg"),
+        "urls": [
+            libsvm_url("regression", "mg_scale"),
+        ],
+        "train": "mg_scale",
+        "format": "libsvm",
+        "TASK": TASK_REG,
+    },
+    "mpg": {
+        "url": libsvm_ds_url("binary", "mpg"),
+        "urls": [
+            libsvm_url("regression", "mpg"),
+        ],
+        "train": "mpg",
+        "format": "libsvm",
+        "TASK": TASK_REG,
+    },
+    "mpg_scale": {
+        "url": libsvm_ds_url("binary", "mpg"),
+        "urls": [
+            libsvm_url("regression", "mpg_scale"),
+        ],
+        "train": "mpg_scale",
+        "format": "libsvm",
+        "TASK": TASK_REG,
+    },
+    "pyrim": {
+        "url": libsvm_ds_url("binary", "pyrim"),
+        "urls": [
+            libsvm_url("regression", "pyrim"),
+        ],
+        "train": "pyrim",
+        "format": "libsvm",
+        "TASK": TASK_REG,
+    },
+    "pyrim_scale": {
+        "url": libsvm_ds_url("binary", "pyrim"),
+        "urls": [
+            libsvm_url("regression", "pyrim_scale"),
+        ],
+        "train": "pyrim_scale",
+        "format": "libsvm",
+        "TASK": TASK_REG,
+    },
+    "space_ga": {
+        "url": libsvm_ds_url("binary", "space_ga"),
+        "urls": [
+            libsvm_url("regression", "space_ga"),
+        ],
+        "train": "space_ga",
+        "format": "libsvm",
+        "TASK": TASK_REG,
+    },
+    "space_ga_scale": {
+        "url": libsvm_ds_url("binary", "space_ga"),
+        "urls": [
+            libsvm_url("regression", "space_ga_scale"),
+        ],
+        "train": "space_ga_scale",
+        "format": "libsvm",
+        "TASK": TASK_REG,
+    },
+    "triazines": {
+        "url": libsvm_ds_url("binary", "triazines"),
+        "urls": [
+            libsvm_url("regression", "triazines"),
+        ],
+        "train": "triazines",
+        "format": "libsvm",
+        "TASK": TASK_REG,
+    },
+    "triazines_scale": {
+        "url": libsvm_ds_url("binary", "triazines"),
+        "urls": [
+            libsvm_url("regression", "triazines_scale"),
+        ],
+        "train": "triazines_scale",
+        "format": "libsvm",
+        "TASK": TASK_REG,
+    },
+    "YearPredictionMSD": {
+        "url": libsvm_ds_url("binary", "YearPredictionMSD"),
+        "urls": [
+            libsvm_url("regression", "YearPredictionMSD.bz2"),
+            libsvm_url("regression", "YearPredictionMSD.t.bz2"),
+        ],
+        "train": "YearPredictionMSD",
+        "test": "YearPredictionMSD.t",
+        "format": "libsvm",
+        "TASK": TASK_REG,
+    },
     "yacht": {
         "url": uci_url("Yacht+Hydrodynamics"),
         "urls": [uci_ds_url("00243/yacht_hydrodynamics.data")],
@@ -507,7 +704,7 @@ DSETS = {
     "faithful": {
         "url": "http://www.stat.cmu.edu/~larry/all-of-statistics/=data/faithful.dat",
         "train": "faithful.dat",
-        "format": "custom",
+        "format": "other",
         "TASK": TASK_CLU,
     },
 }

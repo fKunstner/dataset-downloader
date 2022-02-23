@@ -4,7 +4,7 @@ import os
 import dsdl
 from pathlib import Path
 
-fstr = "| {task: <14} | {dsname: <130} | {tr: <26} | {val: <26} | {te: <26} | {tsize: <10} |"
+fstr = "| {task: <14} | {format:<10} | {dsname: <130} | {tr: <26} | {val: <26} | {te: <26} | {tsize: <10} |"
 
 
 def get_shape_or_none(x):
@@ -32,6 +32,7 @@ print()
 print(
     fstr.format(
         task="Task",
+        format="Format",
         dsname="Dataset",
         tr="Train (X, y)",
         val="Validation (X, y)",
@@ -40,14 +41,15 @@ print(
     )
 )
 
-print(fstr.format(task="-", dsname="-", tr="-", val="-", te="-", tsize="-"))
+print(fstr.format(task="-", format="-", dsname="-", tr="-", val="-", te="-", tsize="-"))
 
 for dsname in dsdl.available_datasets():
     ds = dsdl.load(dsname)
-    dsinfo = dsdl.available_datasets.DSETS[dsname]
+    dsinfo = dsdl.DSETS[dsname]
     print(
         fstr.format(
             task=ds.task,
+            format=dsinfo["format"],
             dsname="[{}]({})".format(dsname, dsinfo["url"]),
             tr=get_shape_or_none(ds.get_train()),
             val=get_shape_or_none(ds.get_val()),
