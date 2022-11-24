@@ -1,6 +1,6 @@
-from .dataset import load, is_downloaded
-from .available_datasets import DSETS
-from .config import Config
+from dsdl.config import Config
+from dsdl.dataset import is_downloaded, load
+from dsdl.datasets_configs import DSETS
 
 
 def available_datasets():

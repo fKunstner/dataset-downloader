@@ -1,8 +1,8 @@
-import dsdl
 import pdb
 
+import dsdl
 
-datasets = ["concrete", "energy", "naval-propulsion", "power-plant"]
+datasets = ["movielens-100k", "movielens-1m"]
 
 for dsname in datasets:
     ds = dsdl.load(dsname)
