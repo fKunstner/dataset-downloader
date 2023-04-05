@@ -3,12 +3,13 @@ import os
 TASK_CLASS = "Classification"
 TASK_REG = "Regression"
 TASK_CLU = "Clustering"
+TASK_REC = "Recommendation"
 
 SIZE_SMALL = "small"
 SIZE_MEDIUM = "medium"
 SIZE_LARGE = "large"
 
-AVAILABLE_TASKS = [TASK_CLASS, TASK_REG, TASK_CLU]
+AVAILABLE_TASKS = [TASK_CLASS, TASK_REG, TASK_CLU, TASK_REC]
 
 
 def libsvm_url(category, file):
@@ -706,5 +707,21 @@ DSETS = {
         "train": "faithful.dat",
         "format": "other",
         "TASK": TASK_CLU,
+    },
+    "movielens-100k": {
+        "url": "https://files.grouplens.org/datasets/movielens/ml-100k.zip",
+        "subfolder": "ml-100k",
+        "train": "u.data",
+        "format": "other",
+        "TASK": TASK_REC,
+        "size": SIZE_MEDIUM,
+    },
+    "movielens-1m": {
+        "url": "https://files.grouplens.org/datasets/movielens/ml-1m.zip",
+        "subfolder": "ml-1m",
+        "train": "ratings.dat",
+        "format": "other",
+        "TASK": TASK_REC,
+        "size": SIZE_LARGE,
     },
 }
