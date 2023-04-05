@@ -4,10 +4,14 @@ import gzip
 import bz2
 import lzma
 import tarfile
+import warnings
 import zipfile
 import urllib
+from pathlib import Path
+from ssl import SSLCertVerificationError
+from urllib.error import URLError
 
-
+import requests
 from tqdm import tqdm
 
 
@@ -25,7 +29,17 @@ def gen_bar_updater():
 
 def download_url(url, fpath):
     print("    Downloading " + url + " to " + fpath)
-    urllib.request.urlretrieve(url, fpath, reporthook=gen_bar_updater())
+
+    def url_retrieve(url: str, outfile):
+        R = requests.get(url, allow_redirects=True)
+        if R.status_code != 200:
+            raise ConnectionError(
+                "could not download {}\nerror code: {}".format(url, R.status_code)
+            )
+
+        outfile.write_bytes(R.content)
+
+    url_retrieve(url, Path(fpath))
 
 
 def _is_tar(filename):
@@ -99,5 +113,17 @@ def download_and_extract(url, download_root):
     fpath = os.path.join(download_root, filename)
     os.makedirs(download_root, exist_ok=True)
 
-    download_url(url, fpath)
+    try:
+        download_url(url, fpath)
+    except URLError as e:
+        warnings.warn(
+            "An error occured while downloading the dataset.\n"
+            + f"|    In case it is a SSL certification error, you could try a manual download of\n"
+            + f"|        {url}\n"
+            + f"|    and extract the archive at \n"
+            + f"|        {os.path.join(download_root, filename)}\n"
+        )
+
+        raise e
+
     extract_archive(download_root, filename)
