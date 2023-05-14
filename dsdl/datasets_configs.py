@@ -1,6 +1,7 @@
 import os
 
 TASK_CLASS = "Classification"
+TASK_MULTICLASS = "Multiclass Classification"
 TASK_REG = "Regression"
 TASK_CLU = "Clustering"
 TASK_REC = "Recommendation"
@@ -9,7 +10,7 @@ SIZE_SMALL = "small"
 SIZE_MEDIUM = "medium"
 SIZE_LARGE = "large"
 
-AVAILABLE_TASKS = [TASK_CLASS, TASK_REG, TASK_CLU, TASK_REC]
+AVAILABLE_TASKS = [TASK_CLASS, TASK_MULTICLASS, TASK_REG, TASK_CLU, TASK_REC]
 
 
 def libsvm_url(category, file):
@@ -510,6 +511,37 @@ DSETS = {
         "train": "cpusmall_scale",
         "format": "libsvm",
         "TASK": TASK_REG,
+    },
+    "SVHN": {
+        "url": libsvm_ds_url("multiclass", "SVHN"),
+        "urls": [
+            libsvm_url("multiclass", "SVHN.xz"),
+            libsvm_url("multiclass", "SVHN.t.xz"),
+        ],
+        "train": "SVHN",
+        "test": "SVHN.t",
+        "format": "libsvm",
+        "TASK": TASK_MULTICLASS,
+    },
+    "cifar10": {
+        "url": libsvm_ds_url("multiclass", "cifar10"),
+        "urls": [
+            libsvm_url("multiclass", "cifar10.bz2"),
+            libsvm_url("multiclass", "cifar10.t.bz2"),
+        ],
+        "train": "cifar10",
+        "test": "cifar10.t",
+        "format": "libsvm",
+        "TASK": TASK_MULTICLASS,
+    },
+    "criteo": {
+        "url": libsvm_ds_url("multiclass", "cifar10"),
+        "urls": [
+            libsvm_url("binary", "criteo.kaggle2014.svm.tar.xz"),
+        ],
+        "train": "cifar10",
+        "format": "libsvm",
+        "TASK": TASK_MULTICLASS,
     },
     "E2006-log1p": {
         "url": libsvm_ds_url("binary", "E2006-log1p"),
