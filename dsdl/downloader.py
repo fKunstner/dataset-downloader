@@ -28,18 +28,21 @@ def gen_bar_updater():
 
 
 def download_url(url, fpath):
-    print("    Downloading " + url + " to " + fpath)
+    if Path(fpath).is_file():
+        print("File already downloaded")
+    else:
+        print("    Downloading " + url + " to " + fpath)
 
-    def url_retrieve(url: str, outfile):
-        R = requests.get(url, allow_redirects=True)
-        if R.status_code != 200:
-            raise ConnectionError(
-                "could not download {}\nerror code: {}".format(url, R.status_code)
-            )
+        def url_retrieve(url: str, outfile):
+            R = requests.get(url, allow_redirects=True)
+            if R.status_code != 200:
+                raise ConnectionError(
+                    "could not download {}\nerror code: {}".format(url, R.status_code)
+                )
 
-        outfile.write_bytes(R.content)
+            outfile.write_bytes(R.content)
 
-    url_retrieve(url, Path(fpath))
+        url_retrieve(url, Path(fpath))
 
 
 def _is_tar(filename):
@@ -48,6 +51,10 @@ def _is_tar(filename):
 
 def _is_targz(filename):
     return filename.endswith(".tar.gz")
+
+
+def _is_tarxz(filename):
+    return filename.endswith(".tar.xz")
 
 
 def _is_gzip(filename):
@@ -78,6 +85,9 @@ def extract_archive(folder_path, filename):
             tar.extractall(path=folder_path)
     elif _is_targz(archive_path):
         with tarfile.open(archive_path, "r:gz") as tar:
+            tar.extractall(path=folder_path)
+    elif _is_tarxz(archive_path):
+        with tarfile.open(archive_path, "r:xz") as tar:
             tar.extractall(path=folder_path)
     elif _is_gzip(archive_path):
         folder_path = os.path.join(

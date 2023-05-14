@@ -539,9 +539,31 @@ DSETS = {
         "urls": [
             libsvm_url("binary", "criteo.kaggle2014.svm.tar.xz"),
         ],
-        "train": "cifar10",
+        "train": "criteo.kaggle2014.svm/train.txt.svm",
+        "test": "criteo.kaggle2014.svm/test.txt.svm",
         "format": "libsvm",
-        "TASK": TASK_MULTICLASS,
+        "TASK": TASK_CLASS,
+    },
+    "webspam": {
+        "url": libsvm_ds_url("binary", "webspam"),
+        "urls": [
+            libsvm_url("binary", "webspam_wc_normalized_trigram.svm.xz"),
+        ],
+        "train": "criteo.kaggle2014.svm/train.txt.svm",
+        "test": "criteo.kaggle2014.svm/test.txt.svm",
+        "format": "libsvm",
+        "TASK": TASK_CLASS,
+    },
+    "kdd2010raw": {
+        "url": libsvm_ds_url("binary", "kdd2010 raw version (bridge to algebra)"),
+        "urls": [
+            libsvm_url("binary", "kddb-raw-libsvm.bz2"),
+            libsvm_url("binary", "kddb-raw-libsvm.t.bz2"),
+        ],
+        "train": "kddb-raw-libsvm",
+        "test": "kddb-raw-libsvm.t",
+        "format": "libsvm",
+        "TASK": TASK_CLASS,
     },
     "E2006-log1p": {
         "url": libsvm_ds_url("binary", "E2006-log1p"),
@@ -572,7 +594,7 @@ DSETS = {
             libsvm_url("regression", "eunite2001.t"),
         ],
         "train": "eunite2001",
-        "test": "eunite2001.t  ",
+        "test": "eunite2001.t",
         "format": "libsvm",
         "TASK": TASK_REG,
     },
